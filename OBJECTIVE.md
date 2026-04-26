@@ -23,15 +23,6 @@ The local DM adversarial loop (GAN-style) is the training mechanism — a Dungeo
 | **Domain transfers** | Trained player domain exports to `artifacts-mmog` without manual edits |
 | **Live win** | Deployed bot achieves a real ArtifactsMMO goal (level-up, resource loop, or fight-tier clear) |
 
-## GAN analogy
-
-| GAN role | RPG role |
-|---|---|
-| Generator | Player bot — HTN `plan/1` produces action sequences to achieve goals |
-| Discriminator | DM bot — HTN `plan/1` produces obstacle sequences to block the player |
-| Training signal | World-state score: player maximises completion rate; DM minimises it |
-| Convergence | Nash equilibrium — DM generates hard-but-beatable scenarios |
-
 ## Local training loop (no external API)
 
 The DM and a local player bot run entirely in-process against a synthetic world
@@ -52,16 +43,3 @@ end
 
 `artifacts-mmog` is a deployment target for a trained player domain, not part
 of the training loop.
-
-## Stack
-
-| Layer | Component |
-|---|---|
-| HTN planner library | `multiplayer-fabric-taskweft` — C++20 NIF, HRR, ReBAC, temporal |
-| Local training harness | `multiplayer-fabric-dungeon-master` *(to be created)* — synthetic world sim, DM bot, local player bot |
-| Game deployment bot | `multiplayer-fabric-artifacts-mmog` — ships trained player domain to ArtifactsMMO |
-
-## Out of scope for this segment
-
-- Zone networking, interest management → `multiplayer-fabric`
-- VR/XR client → `multiplayer-fabric-xr-dev`
