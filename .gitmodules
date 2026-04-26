@@ -1,0 +1,8 @@
+[submodule "multiplayer-fabric-taskweft"]
+	path = multiplayer-fabric-taskweft
+	url = https://github.com/V-Sekai-fire/multiplayer-fabric-taskweft.git
+	branch = main
+[submodule "multiplayer-fabric-artifacts-mmog"]
+	path = multiplayer-fabric-artifacts-mmog
+	url = https://github.com/V-Sekai-fire/multiplayer-fabric-artifacts-mmog.git
+	branch = main
