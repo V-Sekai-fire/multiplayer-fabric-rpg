@@ -12,7 +12,6 @@ The local DM adversarial loop (GAN-style) is the training mechanism — a Dungeo
 
 | Capability | What it verifies |
 |---|---|
-| **Taskweft compiles** | `mix compile` in `multiplayer-fabric-taskweft` succeeds; C++20 NIF loads |
 | **Property tests pass** | `mix test --include property` exits 0 |
 | **Bot connects** | `artifacts_mmog.run` reaches the ArtifactsMMO REST API and receives character state |
 | **HTN plan produced** | Domain JSON-LD → Taskweft `plan/1` returns a non-empty action sequence |
