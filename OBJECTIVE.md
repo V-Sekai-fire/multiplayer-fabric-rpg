@@ -20,22 +20,3 @@ The local GEPA reflective cycle is the training mechanism — the bot self-criti
 | **Instructions improve** | GEPA Pareto frontier advances across ≥2 metrics (success rate, plan length) after N episodes |
 | **Domain transfers** | Trained player domain exports to `artifacts-mmog` without manual edits |
 | **Live win** | Deployed bot achieves a real ArtifactsMMO goal (level-up, resource loop, or fight-tier clear) |
-
-## Local training loop (no external API)
-
-The player bot runs entirely in-process against a synthetic world state — no ArtifactsMMO
-connection required. The GEPA reflective cycle owns adaptation:
-
-```
-loop do
-  player_plan   = Player.plan(world_state)           # execute
-  world_state   = World.apply(world_state, player_plan)
-  score         = World.score(world_state)
-  asi           = ASI.serialize(failure_context)     # capture failure context
-  Player.reflect(score, asi)                          # self-critique
-  GEPA.evolve(Player.instructions, score)            # background Pareto optimizer
-end
-```
-
-`artifacts-mmog` is a deployment target for a trained player domain, not part
-of the training loop.
