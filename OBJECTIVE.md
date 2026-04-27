@@ -6,7 +6,7 @@ RPG game-logic layer. MMOG infrastructure lives in `multiplayer-fabric`; XR clie
 
 **Win condition: the trained player bot, deployed via `artifacts-mmog`, achieves a meaningful goal in the live ArtifactsMMO game** (levels up a character, completes a resource loop, or clears a fight tier). Everything below is the path to that.
 
-The local DM adversarial loop (GAN-style) is the training mechanism — a Dungeon Master bot injects obstacles into a synthetic world so the player bot learns robust replanning before it ever touches the real API.
+The local GEPA reflective cycle is the training mechanism — the bot self-critiques failed episodes, serializes failure context as Actionable Side Information (ASI), and a background Genetic-Pareto optimizer evolves its instruction set before it ever touches the real API.
 
 ## Pass conditions
 
@@ -16,27 +16,24 @@ The local DM adversarial loop (GAN-style) is the training mechanism — a Dungeo
 | **Bot connects** | `artifacts_mmog.run` reaches the ArtifactsMMO REST API and receives character state |
 | **HTN plan produced** | Domain JSON-LD → Taskweft `plan/1` returns a non-empty action sequence |
 | **Episode executes** | Bot completes one goal loop (e.g. `fight_chickens`) without `:error` crash |
-| **DM bot challenges** | DM bot injects an adversarial world-state mutation (blocked path, resource denial) mid-episode |
-| **Player replans** | Player bot calls `replan/3`; produces a new valid sequence within the same episode |
-| **Adversarial loop converges** | After N rounds neither bot trivially wins; DM difficulty and player success rate stabilise |
+| **GEPA cycle runs** | Reflective cycle completes: episode executes → ASI serialized → self-critique generated → GEPA evolves instructions |
+| **Instructions improve** | GEPA Pareto frontier advances across ≥2 metrics (success rate, plan length) after N episodes |
 | **Domain transfers** | Trained player domain exports to `artifacts-mmog` without manual edits |
 | **Live win** | Deployed bot achieves a real ArtifactsMMO goal (level-up, resource loop, or fight-tier clear) |
 
 ## Local training loop (no external API)
 
-The DM and a local player bot run entirely in-process against a synthetic world
-state — no ArtifactsMMO connection required. `multiplayer-fabric-dungeon-master`
-owns the world simulation and both roles:
+The player bot runs entirely in-process against a synthetic world state — no ArtifactsMMO
+connection required. The GEPA reflective cycle owns adaptation:
 
 ```
 loop do
-  dm_mutations  = DungeonMaster.plan(world_state)   # discriminator turn
-  world_state   = World.apply(world_state, dm_mutations)
-  player_plan   = Player.plan(world_state)           # generator turn
+  player_plan   = Player.plan(world_state)           # execute
   world_state   = World.apply(world_state, player_plan)
-  score         = World.score(world_state)           # +1 player win / -1 DM win
-  DungeonMaster.update(score)
-  Player.update(score)
+  score         = World.score(world_state)
+  asi           = ASI.serialize(failure_context)     # capture failure context
+  Player.reflect(score, asi)                          # self-critique
+  GEPA.evolve(Player.instructions, score)            # background Pareto optimizer
 end
 ```
 
