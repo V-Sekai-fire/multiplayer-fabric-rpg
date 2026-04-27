@@ -10,13 +10,13 @@ The local GEPA reflective cycle is the training mechanism — the bot self-criti
 
 ## Pass conditions
 
-| Capability | What it verifies |
-|---|---|
-| **Property tests pass** | `mix test --include property` exits 0 |
-| **Bot connects** | `artifacts_mmog.run` reaches the ArtifactsMMO REST API and receives character state |
-| **HTN plan produced** | Domain JSON-LD → Taskweft `plan/1` returns a non-empty action sequence |
-| **Episode executes** | Bot completes one goal loop (e.g. `fight_chickens`) without `:error` crash |
-| **GEPA cycle runs** | Reflective cycle completes: episode executes → ASI serialized → self-critique generated → GEPA evolves instructions |
-| **Instructions improve** | GEPA Pareto frontier advances across ≥2 metrics (success rate, plan length) after N episodes |
-| **Domain transfers** | Trained player domain exports to `artifacts-mmog` without manual edits |
-| **Live win** | Deployed bot achieves a real ArtifactsMMO goal (level-up, resource loop, or fight-tier clear) |
+| Capability               | What it verifies                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| **Property tests pass**  | `mix test --include property` exits 0                                                                               |
+| **Bot connects**         | `artifacts_mmog.run` reaches the ArtifactsMMO REST API and receives character state                                 |
+| **HTN plan produced**    | Domain JSON-LD → Taskweft `plan/1` returns a non-empty action sequence                                              |
+| **Episode executes**     | Bot completes one goal loop (e.g. `fight_chickens`) without `:error` crash                                          |
+| **GEPA cycle runs**      | Reflective cycle completes: episode executes → ASI serialized → self-critique generated → GEPA evolves instructions |
+| **Instructions improve** | GEPA Pareto frontier advances across ≥2 metrics (success rate, plan length) after N episodes                        |
+| **Domain transfers**     | Trained player domain exports to `artifacts-mmog` without manual edits                                              |
+| **Live win**             | Deployed bot achieves a real ArtifactsMMO goal (level-up, resource loop, or fight-tier clear)                       |
