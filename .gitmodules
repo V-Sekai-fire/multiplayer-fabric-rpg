@@ -6,3 +6,7 @@
 	path = multiplayer-fabric-artifacts-mmog
 	url = https://github.com/V-Sekai-fire/multiplayer-fabric-artifacts-mmog.git
 	branch = main
+[submodule "multiplayer-fabric-turboquant"]
+	path = multiplayer-fabric-turboquant
+	url = https://github.com/V-Sekai-fire/multiplayer-fabric-turboquant.git
+	branch = main
